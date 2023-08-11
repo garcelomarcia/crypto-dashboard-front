@@ -6,7 +6,7 @@ import Table from "./components/table";
 import Liquidations from "./components/liquidations";
 import TradingViewWidget from "./components/tradingview";
 
-const socket = io("https://187.162.118.101:3001/");
+const socket = io("https://fast-delivery-server.xyz/");
 
 export default function Home() {
   const [orders, setOrders] = useState<Order[]>([]);
