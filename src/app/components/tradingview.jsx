@@ -39,7 +39,7 @@ export default function TradingViewWidget({pair}) {
           autosize: true,
           symbol: `BINANCE:${fixedPair}`,
           interval: "1",
-          timezone: "Etc/UTC",
+          timezone: "America/Mexico_City",
           theme: "dark",
           style: "1",
           locale: "en",
