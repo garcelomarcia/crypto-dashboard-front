@@ -28,25 +28,31 @@ export default function Home() {
     });
   }, []);
 
-  console.log(pair)
-
+  console.log(pair);
   return (
-    <div className="flex flex-col h-screen px-10">
-      <h1 className="font-sans text-lg px-2 mx-auto">Chart</h1>
-      <div className="h-2/3">
-        <TradingViewWidget pair={pair} />
-      </div>
-      <div className="flex flex-col lg:flex-row lg:justify-between h-1/3">
-        <div className="w-2/3">
-          <h1 className="font-sans text-lg px-2">Big Orders</h1>
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-w-3xl">
-            <Table orders={orders} onRowClick={handleRowClick} />
+    <div>
+      <div className="flex flex-col xl:flex-row px-4 xl:px-10">
+        <div className="w-full xl:w-2/3 xl:pr-4 mb-4 xl:mb-0">
+          <h1 className="font-sans text-lg">Chart</h1>
+          <div className="h-screen xl:h-2/3">
+            <TradingViewWidget pair={pair} />
           </div>
         </div>
-        <div className="w-1/3">
-          <h1 className="font-sans text-lg px-2">Liquidations</h1>
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-w-3xl">
-            <Liquidations liquidations={liquidations} onRowClick={handleRowClick}/>
+        <div className="w-full xl:w-1/3">
+          <div className="mb-4">
+            <h1 className="font-sans text-lg">Big Orders</h1>
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-w-3xl">
+              <Table orders={orders} onRowClick={handleRowClick} />
+            </div>
+          </div>
+          <div>
+            <h1 className="font-sans text-lg">Liquidations</h1>
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-w-3xl">
+              <Liquidations
+                liquidations={liquidations}
+                onRowClick={handleRowClick}
+              />
+            </div>
           </div>
         </div>
       </div>
