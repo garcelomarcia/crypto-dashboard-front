@@ -5,30 +5,36 @@ import { Order, Liquidation } from "./interfaces";
 import Table from "./components/table";
 import Liquidations from "./components/liquidations";
 import TradingViewWidget from "./components/tradingview";
+import HorizontalBarChart from "./components/categories";
+import PieChart from "./components/pie";
 
 const socket = io("https://fast-delivery-server.xyz/");
 
 export default function Home() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [liquidations, setLiquidations] = useState<Liquidation[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [pair, setPair] = useState("BTCUSDT");
 
   const handleRowClick = (selectedPair: string) => {
     setPair(selectedPair);
   };
 
+  const handleCategory = (category: string) => {
+    setSelectedCategory(category);
+  };
+
   useEffect(() => {
     socket.on("databaseChange", (data) => {
       setOrders(data);
-      console.log("New Big Orders:", data);
     });
     socket.on("liquidationsChange", (data) => {
       setLiquidations(data);
-      console.log("New Liquidations:", data);
     });
   }, []);
 
-  console.log(pair);
+  console.log(selectedCategory);
+
   return (
     <div>
       <div className="flex flex-col xl:flex-row px-4 xl:px-10">
@@ -54,6 +60,17 @@ export default function Home() {
               />
             </div>
           </div>
+        </div>
+      </div>
+      <div className="xl:flex flex-col xl:flex-row justify-between h-screen">
+        <div className="xl:w-1/2 xl:pr-4">
+          <h1 className="font-sans text-lg">MarketCap by Category</h1>
+          <HorizontalBarChart handleCategory={handleCategory} />
+        </div>
+        <div className="xl:w-1/2">
+          <h1 className="font-sans text-lg">Category Detail</h1>
+
+          <PieChart category={selectedCategory} />
         </div>
       </div>
     </div>
