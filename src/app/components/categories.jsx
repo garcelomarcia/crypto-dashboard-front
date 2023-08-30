@@ -67,7 +67,6 @@ const HorizontalBarChart = ({ handleCategory }) => {
     },
     onClick: (event, elements) => {
       if (elements.length > 0) {
-        console.log(elements[0]);
         const clickedIndex = elements[0].index;
         if (selectedCategory === clickedIndex) {
           setRenderColors(initialColors);
@@ -84,8 +83,6 @@ const HorizontalBarChart = ({ handleCategory }) => {
       }
     },
   };
-
-  console.log(coinData);
 
   return isLoading ? (
     <></>
