@@ -10,7 +10,6 @@ import {
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import randomColor from "randomcolor";
-import LabelPluginProvider from "../utils/chart";
 
 Chart.register(
   CategoryScale,
@@ -18,7 +17,6 @@ Chart.register(
   Legend,
   Colors,
   ArcElement,
-  LabelPluginProvider
 );
 
 const PieChart = ({ category }) => {
