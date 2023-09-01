@@ -10,61 +10,90 @@ import {
 } from "chart.js";
 import { Pie } from "react-chartjs-2";
 import randomColor from "randomcolor";
-import ColorThief from "colorthief";
+import LabelPluginProvider from "../utils/chart";
 
-Chart.register(CategoryScale, Tooltip, Legend, Colors, ArcElement);
+Chart.register(
+  CategoryScale,
+  Tooltip,
+  Legend,
+  Colors,
+  ArcElement,
+  LabelPluginProvider
+);
 
 const PieChart = ({ category }) => {
   const initialColors = randomColor({ count: 10 });
   const [categoryDetail, setCategoryDetail] = useState([]);
-  const [colors, setColors] = useState([]);
+  const [colors, setColors] = useState(initialColors);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const getCategoryData = async () => {
-    const apiUrl =
-      category === ""
-        ? "https://fast-delivery-server.xyz/api/"
-        : `https://fast-delivery-server.xyz/api/${category}`;
-
+  const getCategoryDetail = async () => {
     try {
-      const response = await axios.get(apiUrl);
-      setCategoryDetail(response.data.slice(0, 10));
-      getColors();
+      const apiUrl =
+        category === ""
+          ? "https://fast-delivery-server.xyz/api/"
+          : `https://fast-delivery-server.xyz/api/${category}`;
+      const coinResponse = await axios.get(apiUrl);
+      const coinsDetail = coinResponse.data.slice(0, 10);
+      setCategoryDetail(coinsDetail);
+      return coinsDetail;
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log("Error fetching data:", error);
     }
   };
 
-  const getColors = async () => {
-    const imageUrls = req.body.map((coin) => coin.image);
-    const response = await axios.post("https://fast-delivery-server/api/", {
-      body: imageUrls,
-    });
-
-    setColors(response.data);
+  const getData = async () => {
+    try {
+      const coinsDetail = await getCategoryDetail();
+      const imageUrls = coinsDetail.map((coin) => coin.image.split("?")[0]);
+      const colorsResponse = await axios.post(
+        "https://fast-delivery-server.xyz/api/colors",
+        imageUrls
+      );
+      setColors(colorsResponse.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
-    getCategoryData();
+    getData();
   }, [category]);
 
   const names = categoryDetail.map((coin) => coin.name);
   const coinsMarketCap = categoryDetail.map((coin) => coin.market_cap);
-  const pieColors = colors.length > 0 ? colors : initialColors;
+  const urlStrings = categoryDetail.map((coin) => coin.image.split("?")[0]);
+  const imagesArray = urlStrings.map((url) => ({
+    src: url,
+    width: 12,
+    height: 12,
+  }));
 
   const data = {
     labels: names,
     datasets: [
       {
         data: coinsMarketCap,
-        backgroundColor: pieColors,
+        backgroundColor: colors,
       },
     ],
   };
   const chartOptions = {
     maintainAspectRatio: true,
+    plugins: {
+      datalabels: {
+        render: "image",
+        images: imagesArray,
+      },
+    },
   };
-  console.log(colors);
-  return <Pie data={data} options={chartOptions} />;
+  console.log(imagesArray);
+  return isLoading ? (
+    <></>
+  ) : (
+      <Pie data={data} options={chartOptions} className="cursor-pointer" />
+  );
 };
 
 export default PieChart;
