@@ -7,14 +7,23 @@ import Liquidations from "./components/liquidations";
 import TradingViewWidget from "./components/tradingview";
 import HorizontalBarChart from "./components/categories";
 import PieChart from "./components/pie";
+import useSound from "use-sound";
+import debounce from "lodash/debounce";
+import sound from "../../public/marimba.wav";
+import liquidation from "../../public/liquidation.wav";
 
 const socket = io("https://fast-delivery-server.xyz/");
 
 export default function Home() {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [alertOrders, setAlertOrders] = useState<Order[]>([]);
   const [liquidations, setLiquidations] = useState<Liquidation[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [pair, setPair] = useState("BTCUSDT");
+
+  const [play] = useSound(sound);
+  const [playLiquidation] = useSound(liquidation);
+  const debouncedPlaySound = debounce(() => play(), 3600000); // 3600000 milliseconds = 1 hour
 
   const handleRowClick = (selectedPair: string) => {
     setPair(selectedPair);
@@ -24,7 +33,19 @@ export default function Home() {
     setSelectedCategory(category);
   };
 
+  const handleOrderAlerts = () => {
+    // Check if any order has a distance less than 0.5 and play the sound
+    const isAlertTriggered = orders.some(
+      (order: Order) => order.distance < 0.5
+    );
+
+    if (isAlertTriggered) {
+      debouncedPlaySound(); // Play the sound, but only once per hour
+    }
+  };
+
   useEffect(() => {
+    socket.on("initialOrders", (data) => setAlertOrders(data));
     socket.on("databaseChange", (data) => {
       setOrders(data);
     });
@@ -33,7 +54,15 @@ export default function Home() {
     });
   }, []);
 
-  console.log(selectedCategory);
+  useEffect(() => {
+    handleOrderAlerts();
+  }, [orders]);
+
+  useEffect(() => {
+    playLiquidation();
+  }, [liquidations]);
+
+  console.log(alertOrders);
 
   return (
     <div>
@@ -72,6 +101,9 @@ export default function Home() {
 
           <PieChart category={selectedCategory} />
         </div>
+      </div>
+      <div>
+        <button onClick={playLiquidation}></button>
       </div>
     </div>
   );
