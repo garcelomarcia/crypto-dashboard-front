@@ -8,10 +8,8 @@ import TradingViewWidget from "./components/tradingview";
 import HorizontalBarChart from "./components/categories";
 import PieChart from "./components/pie";
 import { ToastContainer, toast } from "react-toastify";
-import useSound from "use-sound";
+import { useCustomSound } from "./utils/useCustomSound";
 import debounce from "lodash/debounce";
-import sound from "../../public/marimba.wav";
-import liquidation from "../../public/liquidation.wav";
 
 const socket = io("https://fast-delivery-server.xyz/");
 
@@ -21,10 +19,12 @@ export default function Home() {
   const [liquidations, setLiquidations] = useState<Liquidation[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [pair, setPair] = useState("BTCUSDT");
+  const { playMarimbaSound, playLiquidationSound } = useCustomSound();
 
-  const [play] = useSound(sound);
-  const [playLiquidation] = useSound(liquidation);
-  const debouncedPlaySound = debounce(() => play(), 3600000); // 3600000 milliseconds = 1 hour
+  const debouncedPlaySound = debounce(
+    () => playMarimbaSound(),
+    3600000
+  ) as () => void;
 
   const handleRowClick = (selectedPair: string) => {
     setPair(selectedPair);
@@ -60,7 +60,7 @@ export default function Home() {
   }, [orders]);
 
   useEffect(() => {
-    playLiquidation();
+    playLiquidationSound();
     toast("New Liquidation!");
   }, [liquidations]);
 
@@ -106,7 +106,8 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <button onClick={playLiquidation}></button>
+        <button onClick={playLiquidationSound}></button>
+        <button onClick={playMarimbaSound}></button>
       </div>
     </div>
   );

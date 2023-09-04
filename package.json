@@ -32,6 +32,7 @@
     "use-sound": "^4.0.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.197",
     "file-loader": "^6.2.0"
   }
 }
