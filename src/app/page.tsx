@@ -10,7 +10,6 @@ import PieChart from "./components/pie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCustomSound } from "./utils/useCustomSound";
-import debounce from "lodash/debounce";
 
 const socket = io("https://fast-delivery-server.xyz/");
 
@@ -23,6 +22,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [pair, setPair] = useState("BTCUSDT");
   const [isLoading, setIsLoading] = useState(true);
+  const [enableSound, setEnableSound] = useState(false);
 
   const handleRowClick = (selectedPair: string) => {
     setPair(selectedPair);
@@ -30,14 +30,6 @@ export default function Home() {
 
   const handleCategory = (category: string) => {
     setSelectedCategory(category);
-  };
-
-  const firstButtonRef = useRef<HTMLButtonElement | null>(null);
-
-  const clickFirstButton = () => {
-    if (firstButtonRef.current) {
-      firstButtonRef.current.click();
-    }
   };
 
   function getArrayDifference(array1: Order[], array2: Order[]) {
@@ -59,10 +51,13 @@ export default function Home() {
     console.log("ALERT ORDERS", alertOrders);
     console.log("DIFFERENCE", difference);
     if (difference.length > 0) {
-      clickFirstButton();
+      if (enableSound) {
+        playMarimbaSound();
+      }
+
       toast(`Big Order Alert ${difference[0].pair} @ ${difference[0].price}`, {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 15000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -87,7 +82,7 @@ export default function Home() {
     if (!isLoading) {
       handleOrderAlerts();
     }
-  }, [orders, isLoading]);
+  }, [orders]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -95,7 +90,7 @@ export default function Home() {
       if (liquidations.length > 0) {
         toast.error(`New Liquidation on symbol ${liquidations[0].symbol}`, {
           position: "top-center",
-          autoClose: 5000,
+          autoClose: 15000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -105,12 +100,29 @@ export default function Home() {
         });
       }
     }
-  }, [liquidations, isLoading]);
+  }, [liquidations]);
+
+  useEffect(() => {
+    if (orders.length > 0 && liquidations.length > 0) setIsLoading(false);
+  }, [orders, liquidations]);
 
   console.log(alertOrders);
 
   return (
-    <div>
+    <div className="py-4">
+      <div className="flex flex-row justify-end px-4 xl:px-10">
+        <button
+          type="button"
+          className={`${
+            enableSound
+              ? "bg-red-500 hover:bg-red-600"
+              : "bg-green-500 hover:bg-green-600"
+          } text-white font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+          onClick={() => setEnableSound((prevEnableSound) => !prevEnableSound)}
+        >
+          {enableSound ? "Disable Sound" : "Enable Sound"}
+        </button>
+      </div>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -155,15 +167,12 @@ export default function Home() {
         </div>
         <div className="xl:w-1/2">
           <h1 className="font-sans text-lg">Category Detail</h1>
-
           <PieChart category={selectedCategory} />
         </div>
       </div>
       <div>
-        <button onClick={playLiquidationSound}>.</button>
-        <button onClick={playMarimbaSound} ref={firstButtonRef}>
-          .
-        </button>
+        <button onClick={playLiquidationSound}></button>
+        <button onClick={playMarimbaSound}></button>
       </div>
     </div>
   );
