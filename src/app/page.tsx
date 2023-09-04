@@ -7,6 +7,7 @@ import Liquidations from "./components/liquidations";
 import TradingViewWidget from "./components/tradingview";
 import HorizontalBarChart from "./components/categories";
 import PieChart from "./components/pie";
+import { ToastContainer, toast } from "react-toastify";
 import useSound from "use-sound";
 import debounce from "lodash/debounce";
 import sound from "../../public/marimba.wav";
@@ -60,12 +61,14 @@ export default function Home() {
 
   useEffect(() => {
     playLiquidation();
+    toast("New Liquidation!");
   }, [liquidations]);
 
-  console.log(alertOrders);
+  console.log(liquidations);
 
   return (
     <div>
+      <ToastContainer />
       <div className="flex flex-col xl:flex-row px-4 xl:px-10">
         <div className="w-full xl:w-2/3 xl:pr-4 mb-4 xl:mb-0">
           <h1 className="font-sans text-lg">Chart</h1>
