@@ -5,7 +5,7 @@ interface TableProps {
   orders: Order[];
   onRowClick: (pair: string) => void;
 }
-const Table: React.FC<TableProps> = ({ orders,onRowClick }) => {
+const Table: React.FC<TableProps> = ({ orders, onRowClick }) => {
   return (
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -23,7 +23,7 @@ const Table: React.FC<TableProps> = ({ orders,onRowClick }) => {
             Price
           </th>
           <th scope="col" className="px-6 py-3">
-            Distance
+            Distance (%)
           </th>
           <th scope="col" className="px-6 py-3">
             Time
@@ -35,7 +35,13 @@ const Table: React.FC<TableProps> = ({ orders,onRowClick }) => {
           orders.map((order, i) => {
             return (
               <tr
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
+                className={`${
+                  order.distance > 0.5
+                    ? ""
+                    : order.side === "buy"
+                    ? "bg-gradient-to-r from-green-300 to-green-600 text-white"
+                    : "bg-gradient-to-r from-red-300 to-red-600 text-white"
+                } bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer`}
                 key={i}
                 onClick={() => onRowClick(order.pair)}
               >
