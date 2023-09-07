@@ -12,6 +12,7 @@ export interface Liquidation {
   symbol: string;
   side: string;
   volume: string;
+  avgvolume: string;
   quantity: string;
   time: string;
 }

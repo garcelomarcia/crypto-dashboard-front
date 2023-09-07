@@ -18,6 +18,9 @@ const Liquidations: React.FC<TableProps> = ({ liquidations, onRowClick }) => {
             Amount
           </th>
           <th scope="col" className="px-6 py-3">
+            Avg 1m Vol ($)
+          </th>
+          <th scope="col" className="px-6 py-3">
             Volume
           </th>
           <th scope="col" className="px-6 py-3">
@@ -35,6 +38,9 @@ const Liquidations: React.FC<TableProps> = ({ liquidations, onRowClick }) => {
             // Format order.volume with dollar sign, K, and M
             const formattedVolume =
               "$" + formatNumberWithKMB(Number(order.volume), 1);
+
+            const formattedAvgVolume =
+              "$" + formatNumberWithKMB(Number(order.avgvolume), 1);
 
             // Format order.quantity with K and M
             const formattedQuantity = formatNumberWithKMB(
@@ -67,6 +73,7 @@ const Liquidations: React.FC<TableProps> = ({ liquidations, onRowClick }) => {
                   {order.symbol}
                 </th>
                 <td className="px-6 py-4 text-white">{formattedVolume}</td>
+                <td className="px-6 py-4 text-white">{formattedAvgVolume}</td>
                 <td className="px-6 py-4 text-white">{formattedQuantity}</td>
                 <td className="px-6 py-4 text-white">
                   {order.time.split(".")[0]}
