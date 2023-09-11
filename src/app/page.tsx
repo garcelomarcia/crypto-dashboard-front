@@ -9,9 +9,17 @@ import HorizontalBarChart from "./components/categories";
 import PieChart from "./components/pie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useCustomSound } from "./utils/useCustomSound";
+import { useCustomSound, checkFilter } from "./utils/utils";
 
 const socket = io("https://fast-delivery-server.xyz/");
+
+export interface FilterCriteria {
+  pair?: string;
+  side?: string;
+  strength?: number;
+  distance?: number;
+  time?: number;
+}
 
 export default function Home() {
   const { playMarimbaSound, playLiquidationSound } = useCustomSound();
@@ -23,6 +31,11 @@ export default function Home() {
   const [pair, setPair] = useState("BTCUSDT");
   const [isLoading, setIsLoading] = useState(true);
   const [enableSound, setEnableSound] = useState(false);
+  const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>({
+    strength: 10,
+    distance: 0.5,
+    time:60
+  });
 
   const handleRowClick = (selectedPair: string) => {
     setPair(selectedPair);
@@ -45,7 +58,10 @@ export default function Home() {
   }
 
   const handleOrderAlerts = () => {
-    const ordersClose = orders.filter((order: Order) => order.distance < 0.5);
+    const ordersClose = orders.filter((order: Order) => {
+      if (checkFilter(order,filterCriteria)) return order;
+    });
+
     const difference = getArrayDifference(ordersClose, alertOrders);
     console.log("ORDERS CLOSE", ordersClose);
     console.log("ALERT ORDERS", alertOrders);
@@ -110,7 +126,89 @@ export default function Home() {
 
   return (
     <div className="py-4">
-      <div className="flex flex-row justify-end px-4 xl:px-10">
+      <h1 className="px-4 xl:px-10 font-sans text-lg">
+        Order Notification Filter
+      </h1>
+      <div className="flex flex-row justify-between px-4 xl:px-10 items-center">
+        <form>
+          <div className="flex flex-row justify-between mb-4">
+            <div className="m-2">
+              <h3 className=" text-sm mb-1">Symbol</h3>
+              <input
+                type="text"
+                placeholder={filterCriteria.pair}
+                value={filterCriteria.pair}
+                onChange={(e) =>
+                  setFilterCriteria({
+                    ...filterCriteria,
+                    pair: e.target.value,
+                  })
+                }
+                className="bg-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+            <div className="m-2">
+              <h3 className=" text-sm mb-1">Side</h3>
+              <select
+                value={filterCriteria.side}
+                onChange={(e) =>
+                  setFilterCriteria({
+                    ...filterCriteria,
+                    side: e.target.value,
+                  })
+                }
+                className="bg-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                <option value=""></option>
+                <option value="buy">buy</option>
+                <option value="sell">sell</option>
+              </select>
+            </div>
+
+            <div className="m-2">
+              <h3 className="text-sm mb-1">Strength {">="}</h3>
+              <input
+                type="number"
+                value={filterCriteria.strength || ""}
+                onChange={(e) =>
+                  setFilterCriteria({
+                    ...filterCriteria,
+                    strength: parseFloat(e.target.value) || NaN,
+                  })
+                }
+                className="bg-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+            <div className="m-2">
+              <h3 className="text-sm mb-1">Distance {"<"}</h3>
+              <input
+                type="number"
+                value={filterCriteria.distance || ""}
+                onChange={(e) =>
+                  setFilterCriteria({
+                    ...filterCriteria,
+                    distance: parseFloat(e.target.value) || NaN,
+                  })
+                }
+                className="bg-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+            <div className="m-2">
+              <h3 className=" text-sm mb-1">Time {">="}</h3>
+              <input
+                type="number"
+                value={filterCriteria.time || ""}
+                onChange={(e) =>
+                  setFilterCriteria({
+                    ...filterCriteria,
+                    time: parseFloat(e.target.value) || NaN,
+                  })
+                }
+                className="bg-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              />
+            </div>
+          </div>
+        </form>
         <button
           type="button"
           className={`${
@@ -146,7 +244,11 @@ export default function Home() {
           <div className="mb-4">
             <h1 className="font-sans text-lg">Big Orders</h1>
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg max-w-3xl">
-              <Table orders={orders} onRowClick={handleRowClick} />
+              <Table
+                orders={orders}
+                onRowClick={handleRowClick}
+                filterCriteria={filterCriteria}
+              />
             </div>
           </div>
           <div>

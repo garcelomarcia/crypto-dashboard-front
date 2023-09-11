@@ -16,3 +16,16 @@ export const useCustomSound = () => {
 
   return { playMarimbaSound, playLiquidationSound };
 };
+
+export const checkFilter = (order,filterCriteria) => {
+  if (
+    (!filterCriteria.pair || order.pair === filterCriteria.pair) &&
+    (!filterCriteria.side || order.side === filterCriteria.side) &&
+    (!filterCriteria.strength || order.strength >= filterCriteria.strength) &&
+    (!filterCriteria.distance || order.distance < filterCriteria.distance) &&
+    (!filterCriteria.time || order.time >= filterCriteria.time)
+  ) {
+    return true;
+  }
+  return false;
+};

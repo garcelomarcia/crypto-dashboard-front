@@ -1,11 +1,18 @@
 import Image from "next/image";
 import { Order } from "../interfaces";
+import { FilterCriteria } from "../page";
+import { checkFilter } from "../utils/utils";
 
 interface TableProps {
   orders: Order[];
   onRowClick: (pair: string) => void;
+  filterCriteria: FilterCriteria;
 }
-const Table: React.FC<TableProps> = ({ orders, onRowClick }) => {
+const Table: React.FC<TableProps> = ({
+  orders,
+  onRowClick,
+  filterCriteria,
+}) => {
   return (
     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -36,7 +43,7 @@ const Table: React.FC<TableProps> = ({ orders, onRowClick }) => {
             return (
               <tr
                 className={`${
-                  order.distance > 0.5
+                  !checkFilter(order,filterCriteria)
                     ? ""
                     : order.side === "buy"
                     ? "bg-gradient-to-r from-green-300 to-green-600 text-white"
