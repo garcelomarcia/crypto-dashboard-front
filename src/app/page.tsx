@@ -86,7 +86,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoading) {
-      playLiquidationSound();
+      if (enableSound) playLiquidationSound();
       if (liquidations.length > 0) {
         toast.error(`New Liquidation on symbol ${liquidations[0].symbol}`, {
           position: "top-center",
@@ -106,7 +106,7 @@ export default function Home() {
     if (orders.length > 0 && liquidations.length > 0) setIsLoading(false);
   }, [orders, liquidations]);
 
-  console.log(alertOrders);
+  console.log(enableSound);
 
   return (
     <div className="py-4">
