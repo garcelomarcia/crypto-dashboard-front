@@ -56,7 +56,7 @@ const Liquidations: React.FC<TableProps> = ({ liquidations, onRowClick }) => {
                     : "bg-gradient-to-r from-red-300 to-red-600"
                 } cursor-pointer`}
                 key={i}
-                onClick={() => onRowClick(order.symbol)}
+                onClick={() => onRowClick(order.symbol+".P")}
               >
                 <th
                   scope="row"
