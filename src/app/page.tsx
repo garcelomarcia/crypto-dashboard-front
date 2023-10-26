@@ -125,10 +125,18 @@ export default function Home() {
     <div className="w-full">
       <div className="py-2 flex w-full">
         <Sidebar>
-          <SidebarItem text="Live Data" icon={<Chartsvg />} href="/" />
+          <SidebarItem
+            text="Live Data"
+            icon={<Chartsvg />}
+            href="/"
+            active={true}
+            alert={false}
+          />
           <SidebarItem
             text="Crypto Statistics"
             icon={<Piesvg />}
+            active={true}
+            alert={false}
             href="/stats"
           />
         </Sidebar>
