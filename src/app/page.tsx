@@ -129,13 +129,13 @@ export default function Home() {
             text="Live Data"
             icon={<Chartsvg />}
             href="/"
-            active={true}
+            active={false}
             alert={false}
           />
           <SidebarItem
             text="Crypto Statistics"
             icon={<Piesvg />}
-            active={true}
+            active={false}
             alert={false}
             href="/stats"
           />
@@ -164,7 +164,7 @@ export default function Home() {
                 <form>
                   <div className="flex flex-row justify-between mb-4">
                     <div className="m-2">
-                      <h3 className=" text-sm mb-1">Quantity</h3>
+                      <h3 className=" text-sm mb-1">Symbol</h3>
                       <input
                         type="text"
                         placeholder={filterCriteria.pair}
