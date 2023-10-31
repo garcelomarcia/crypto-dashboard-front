@@ -7,12 +7,12 @@ import {
   Colors,
   Chart,
   BarController,
-  BarElement, // Import the BarController
+  BarElement,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import randomColor from "randomcolor";
 
-Chart.register(LinearScale, CategoryScale, Tooltip, Colors, BarElement); // Register the BarController
+Chart.register(LinearScale, CategoryScale, Tooltip, Colors, BarElement); 
 
 const HorizontalBarChart = ({ handleCategory }) => {
   const [globalData, setGlobalData] = useState({});

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import HorizontalBarChart from "../components/categories";
 import PieChart from "../components/pie";
+import GaugeChart from "../components/gauge";
 import Sidebar, { SidebarItem } from "../components/sidebar";
 import { Speakeron, Speakeroff, Piesvg, Chartsvg } from "../components/svgs";
 export default function Stats() {
@@ -17,26 +18,36 @@ export default function Stats() {
             text="Live Data"
             icon={<Chartsvg />}
             href="/"
-            active={true}
+            active={false}
             alert={false}
           />
           <SidebarItem
             text="Crypto Statistics"
             icon={<Piesvg />}
-            active={true}
+            active={false}
             alert={false}
             href="/stats"
           />
         </Sidebar>
-        <div className="flex-1 w-full">
-          <div className="xl:flex flex-col xl:flex-row justify-between h-screen">
-            <div className="xl:w-1/2 xl:pr-4">
-              <h1 className="font-sans text-lg">MarketCap by Category</h1>
-              <HorizontalBarChart handleCategory={handleCategory} />
+        <div className="flex flex-col w-full h-screen">
+          <div className="h-1/2">
+            <div className="flex flex-row justify-between px-4">
+              <div className="w-1/3">
+                <h1 className="font-sans text-lg">MarketCap by Category</h1>
+                <HorizontalBarChart handleCategory={handleCategory} />
+              </div>
+              <div className="w-1/3">
+                <h1 className="font-sans text-lg">Fear & Greed Index</h1>
+                <GaugeChart />
+              </div>
             </div>
-            <div className="xl:w-1/2">
-              <h1 className="font-sans text-lg">Category Detail</h1>
-              <PieChart category={selectedCategory} />
+          </div>
+          <div className="h-1/2">
+            <div className="flex flex-row justify-between px-4">
+              <div className="w-1/3">
+                <h1 className="font-sans text-lg">Category Detail</h1>
+                <PieChart category={selectedCategory} />
+              </div>
             </div>
           </div>
         </div>
