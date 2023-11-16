@@ -55,7 +55,7 @@ export default function Home() {
     return difference;
   }
 
-  const handleOrderAlerts = () => {
+  const handleOrderAlerts = async () => {
     const ordersClose = orders.filter((order: Order) => {
       if (checkFilter(order, filterCriteria)) return order;
     });
@@ -80,7 +80,11 @@ export default function Home() {
         theme: "light",
       });
 
-      axios.post("https://fast-delivery-server.xyz/api/history", difference[0])
+      const response = await axios.post(
+        "https://fast-delivery-server.xyz/api/history",
+        difference[0]
+      );
+      console.log("axios reponse", response);
 
       setAlertOrders(ordersClose);
     }
