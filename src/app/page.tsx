@@ -119,7 +119,7 @@ export default function Home() {
     if (orders.length > 0 && liquidations.length > 0) setIsLoading(false);
   }, [orders, liquidations]);
 
-  console.log(liquidationsFilter);
+  console.log(orders);
 
   return (
     <div className="w-full">

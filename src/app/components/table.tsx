@@ -25,6 +25,8 @@ const Table: React.FC<TableProps> = ({
           </th>
           <th scope="col" className="px-6 py-3">
             Strength
+          </th><th scope="col" className="px-6 py-3">
+            Amount
           </th>
           <th scope="col" className="px-6 py-3">
             Price
@@ -78,6 +80,7 @@ const Table: React.FC<TableProps> = ({
                 )}
 
                 <td className="px-6 py-4">{order.strength}</td>
+                <td className="px-6 py-4">{order.amount}</td>
                 <td className="px-6 py-4">{order.price}</td>
                 <td className="px-6 py-4">{order.distance}</td>
                 <td className="px-6 py-4">{order.time}</td>

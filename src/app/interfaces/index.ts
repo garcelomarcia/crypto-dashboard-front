@@ -3,6 +3,7 @@ export interface Order {
   pair: string;
   side: string;
   strength: number;
+  amount: number;
   price: number;
   distance: number;
   time: number;
