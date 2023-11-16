@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useCustomSound, checkFilter } from "./utils/utils";
 import { Speakeron, Speakeroff, Piesvg, Chartsvg } from "./components/svgs";
+import axios from "axios";
 
 const socket = io("https://fast-delivery-server.xyz/");
 
@@ -34,8 +35,8 @@ export default function Home() {
   const [liquidationsFilter, setLiquidationsFilter] = useState("5000");
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteria>({
     strength: 10,
-    distance: 0.5,
-    time: 60,
+    distance: 0.2,
+    time: 240,
   });
 
   const handleRowClick = (selectedPair: string) => {
@@ -78,6 +79,9 @@ export default function Home() {
         progress: undefined,
         theme: "light",
       });
+
+      axios.post("https://fast-delivery-server.xyz/api/history", difference[0])
+
       setAlertOrders(ordersClose);
     }
   };
