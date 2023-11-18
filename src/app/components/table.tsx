@@ -42,6 +42,7 @@ const Table: React.FC<TableProps> = ({
       <tbody>
         {orders &&
           orders.map((order, i) => {
+            const formattedAmount = formatNumberWithKMB(Number(order.amount),1);
             return (
               <tr
                 className={`${
@@ -80,7 +81,7 @@ const Table: React.FC<TableProps> = ({
                 )}
 
                 <td className="px-6 py-4">{order.strength}</td>
-                <td className="px-6 py-4">{order.amount}</td>
+                <td className="px-6 py-4">{formattedAmount}</td>
                 <td className="px-6 py-4">{order.price}</td>
                 <td className="px-6 py-4">{order.distance}</td>
                 <td className="px-6 py-4">{order.time}</td>
@@ -93,3 +94,16 @@ const Table: React.FC<TableProps> = ({
 };
 
 export default Table;
+
+// Function to format numbers with K, M, or B for thousands, millions, or billions
+function formatNumberWithKMB(number: number, decimals: number): string {
+  if (number >= 1e9) {
+    return (number / 1e9).toFixed(decimals) + "B";
+  } else if (number >= 1e6) {
+    return (number / 1e6).toFixed(decimals) + "M";
+  } else if (number >= 1e3) {
+    return (number / 1e3).toFixed(decimals) + "K";
+  } else {
+    return number.toFixed(decimals);
+  }
+}

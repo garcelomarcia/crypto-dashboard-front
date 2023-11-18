@@ -80,11 +80,16 @@ export default function Home() {
         theme: "light",
       });
 
-      const response = await axios.post(
-        "https://fast-delivery-server.xyz/api/history",
-        difference[0]
-      );
-      console.log("axios reponse", response);
+      const orderToSend = { ...difference[0] };
+      delete orderToSend.id;
+
+      if (orderToSend.pair != "USDC") {
+        const response = await axios.post(
+          "https://fast-delivery-server.xyz/api/history",
+          orderToSend
+        );
+        console.log("axios reponse", response);
+      }
 
       setAlertOrders(ordersClose);
     }
