@@ -80,16 +80,16 @@ export default function Home() {
         theme: "light",
       });
 
-      const orderToSend = { ...difference[0] };
-      delete orderToSend.id;
+      // const orderToSend = { ...difference[0] };
+      // delete orderToSend.id;
 
-      if (orderToSend.pair != "USDC") {
-        const response = await axios.post(
-          "https://fast-delivery-server.xyz/api/history",
-          orderToSend
-        );
-        console.log("axios reponse", response);
-      }
+      // if (orderToSend.pair != "USDC") {
+      //   const response = await axios.post(
+      //     "https://fast-delivery-server.xyz/api/history",
+      //     orderToSend
+      //   );
+      //   console.log("axios reponse", response);
+      // }
 
       setAlertOrders(ordersClose);
     }
