@@ -12,7 +12,12 @@ import { useCustomSound, checkFilter } from "./utils/utils";
 import { Speakeron, Speakeroff, Piesvg, Chartsvg } from "./components/svgs";
 import axios from "axios";
 
-const socket = io("https://assuring-guiding-pony.ngrok-free.app/");
+const socket = io("https://assuring-guiding-pony.ngrok-free.app/", {
+  query: {
+    "ngrok-skip-browser-warning": "latest"
+  }
+});
+
 
 export interface FilterCriteria {
   pair?: string;
