@@ -29,8 +29,8 @@ const PieChart = ({ category }) => {
     try {
       const apiUrl =
         category === ""
-          ? "https://fast-delivery-server.xyz/api/"
-          : `https://fast-delivery-server.xyz/api/${category}`;
+          ? "https://assuring-guiding-pony.ngrok-free.app/api/"
+          : `https://assuring-guiding-pony.ngrok-free.app/api/${category}`;
       const coinResponse = await axios.get(apiUrl);
       const coinsDetail = coinResponse.data.slice(0, 10);
       setCategoryDetail(coinsDetail);
@@ -45,7 +45,7 @@ const PieChart = ({ category }) => {
       const coinsDetail = await getCategoryDetail();
       const imageUrls = coinsDetail.map((coin) => coin.image.split("?")[0]);
       const colorsResponse = await axios.post(
-        "https://fast-delivery-server.xyz/api/colors",
+        "https://assuring-guiding-pony.ngrok-free.app/api/colors",
         imageUrls
       );
       setColors(colorsResponse.data);

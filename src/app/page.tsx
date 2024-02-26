@@ -12,7 +12,7 @@ import { useCustomSound, checkFilter } from "./utils/utils";
 import { Speakeron, Speakeroff, Piesvg, Chartsvg } from "./components/svgs";
 import axios from "axios";
 
-const socket = io("https://fast-delivery-server.xyz/");
+const socket = io("https://assuring-guiding-pony.ngrok-free.app/");
 
 export interface FilterCriteria {
   pair?: string;
@@ -85,7 +85,7 @@ export default function Home() {
 
       // if (orderToSend.pair != "USDC") {
       //   const response = await axios.post(
-      //     "https://fast-delivery-server.xyz/api/history",
+      //     "https://assuring-guiding-pony.ngrok-free.app/api/history",
       //     orderToSend
       //   );
       //   console.log("axios reponse", response);
