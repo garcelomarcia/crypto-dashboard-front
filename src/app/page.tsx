@@ -14,7 +14,7 @@ import axios from "axios";
 
 const socket = io("https://assuring-guiding-pony.ngrok-free.app/", {
   query: {
-    "ngrok-skip-browser-warning": "latest"
+    "ngrok-skip-browser-warning": "69420"
   }
 });
 
