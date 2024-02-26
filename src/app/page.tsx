@@ -13,7 +13,7 @@ import { Speakeron, Speakeroff, Piesvg, Chartsvg } from "./components/svgs";
 import axios from "axios";
 
 const socket = io("https://assuring-guiding-pony.ngrok-free.app/", {
-  query: {
+  extraHeaders: {
     "ngrok-skip-browser-warning": "69420"
   }
 });
