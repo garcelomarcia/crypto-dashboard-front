@@ -14,7 +14,7 @@ import axios from "axios";
 
 const socket = io("https://assuring-guiding-pony.ngrok-free.app/", {
   extraHeaders: {
-    "ngrok-skip-browser-warning": true
+    "ngrok-skip-browser-warning": "1234"
   }
 });
 
